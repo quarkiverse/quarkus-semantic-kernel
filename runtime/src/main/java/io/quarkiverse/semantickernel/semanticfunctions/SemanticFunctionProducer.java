@@ -15,8 +15,6 @@ import com.microsoft.semantickernel.exceptions.SkillsNotFoundException;
 import com.microsoft.semantickernel.orchestration.SKFunction;
 import com.microsoft.semantickernel.semanticfunctions.PromptTemplate;
 import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig;
-import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig.CompletionConfig;
-import com.microsoft.semantickernel.semanticfunctions.PromptTemplateConfig.CompletionConfigBuilder;
 import com.microsoft.semantickernel.semanticfunctions.SemanticFunctionConfig;
 import com.microsoft.semantickernel.skilldefinition.FunctionNotFound;
 import com.microsoft.semantickernel.textcompletion.CompletionRequestSettings;
@@ -86,8 +84,8 @@ public class SemanticFunctionProducer {
         Skill skillConfiguration = lookupForSkill(skillName);
         Function functionConfiguration = lookupForFunction(functionName, skillConfiguration);
 
-        CompletionConfig completionConfig = configureCompletion(functionConfiguration);
-        PromptTemplateConfig tplConfig = new PromptTemplateConfig(completionConfig);
+        CompletionRequestSettings completionRequestSettings = configureCompletionRequestSettings(functionConfiguration);
+        PromptTemplateConfig tplConfig = new PromptTemplateConfig(completionRequestSettings);
 
         PromptTemplate promptTemplate = SKBuilders.promptTemplate()
                 .withPromptTemplate(functionConfiguration.prompt())
@@ -115,8 +113,9 @@ public class SemanticFunctionProducer {
                         "Missing configuration for the skill: " + skillName));
     }
 
-    private CompletionConfig configureCompletion(Function sfConfiguration) {
-        CompletionConfigBuilder builder = new CompletionConfigBuilder();
+    private CompletionRequestSettings configureCompletionRequestSettings(Function sfConfiguration) {
+
+        CompletionRequestSettings.Builder builder = SKBuilders.completionRequestSettings();
         if (sfConfiguration.frequencyPenalty().isPresent()) {
             builder = builder.frequencyPenalty(sfConfiguration.frequencyPenalty().get());
         }
