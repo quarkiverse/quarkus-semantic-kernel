@@ -29,7 +29,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>3.6.3</quarkus.version>
-    <semantickernel.version>0.2.13-alpha</semantickernel.version>
+    <semantickernel.version>1.0.0-rc2</semantickernel.version>
   </properties>
   <dependencyManagement>
     <dependencies>
